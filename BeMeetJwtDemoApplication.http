@@ -1,0 +1,79 @@
+### PASS - Create token
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "test"
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### PASS - access private
+GET http://localhost:8080/private
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJCRS1tZWV0Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImJjMDE3MmFjLWY2MWItNDljZi1hYzAwLTZkZTVlZjliMGY2YiIsInN1YiI6InRlc3QiLCJpYXQiOjE3MTA4MDk2MzEsIm5iZiI6MTcxMDgwOTYzMSwiZXhwIjoxNzEwODEzMjMxfQ.rPxuiSPummP3cILn4xxq19FDyioUik46D5a4vtSgYXI
+
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### PASS - access private user
+GET http://localhost:8080/private/user
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJCRS1tZWV0Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImJjMDE3MmFjLWY2MWItNDljZi1hYzAwLTZkZTVlZjliMGY2YiIsInN1YiI6InRlc3QiLCJpYXQiOjE3MTA4MDk2MzEsIm5iZiI6MTcxMDgwOTYzMSwiZXhwIjoxNzEwODEzMjMxfQ.rPxuiSPummP3cILn4xxq19FDyioUik46D5a4vtSgYXI
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### FAIL - bad group
+GET http://localhost:8080/private/admin
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJCRS1tZWV0Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImJjMDE3MmFjLWY2MWItNDljZi1hYzAwLTZkZTVlZjliMGY2YiIsInN1YiI6InRlc3QiLCJpYXQiOjE3MTA4MDk2MzEsIm5iZiI6MTcxMDgwOTYzMSwiZXhwIjoxNzEwODEzMjMxfQ.rPxuiSPummP3cILn4xxq19FDyioUik46D5a4vtSgYXI
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 403, "Response status is not 403");
+    });
+%}
+
+### FAIL - no auth
+GET http://localhost:8080/private
+Content-Type: application/json
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 403, "Response status is not 403");
+    });
+%}
+
+### FAIL - invalid token
+GET http://localhost:8080/private
+Content-Type: application/json
+Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJCRS1tZWV0Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImI0MmMyYzE4LTE0ZDYtNDYyZC04ZTdjLTc4MWU2YzE2NzFhZCIsInN1YiI6InRlc3QiLCJpYXQiOjE3MTA4MDg2MTIsIm5iZiI6MTcxMDgwODYxMiwiZXhwIjoxNzEwODEyMjEyfQ.R1wfcCLze-esjQPa4wMha-ni2NS7i0xf11wrR2HQmrk
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 403, "Response status is not 403");
+    });
+%}
+
+### FAIL - invalid signature
+GET http://localhost:8080/private
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJCRS1tZWV0Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImI0MmMyYzE4LTE0ZDYtNDYyZC04ZTdjLTc4MWU2YzE2NzFhZCIsInN1YiI6InRlc3QiLCJpYXQiOjE3MTA4MDg2MTIsIm5iZiI6MTcxMDgwODYxMiwiZXhwIjoxNzEwODEyMjEyfQ.Rw2eKgy7NRzXggQ2Xgo2eWCYMKh68SAegCaNE_vEHAM
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 403, "Response status is not 403");
+    });
+%}

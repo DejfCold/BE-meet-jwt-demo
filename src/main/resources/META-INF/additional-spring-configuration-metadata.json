@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "be-meet.jwt.hmac.secret",
+      "type": "java.lang.String",
+      "description": "Description for be-meet.hmac.secret."
+  }
+] }
